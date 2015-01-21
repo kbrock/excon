@@ -16,12 +16,20 @@ module Excon
       if datum[:scheme] == UNIX
         '' << datum[:scheme] << '://' << datum[:socket]
       else
-        '' << datum[:scheme] << '://' << datum[:host] << port_string(datum)
+        '' << datum[:scheme] << '://' << host_string(datum) << port_string(datum)
       end
     end
 
     def request_uri(datum)
       connection_uri(datum) << datum[:path] << query_string(datum)
+    end
+
+    def host_string(datum)
+      if datum[:host].include?(":")
+        '['+datum[:host]+']'
+      else
+        datum[:host]
+      end
     end
 
     def port_string(datum)

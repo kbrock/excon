@@ -85,7 +85,7 @@ module Excon
           @socket_key << '://' << @data[:socket]
         end
       else
-        @socket_key << '://' << @data[:host] << port_string(@data)
+        @socket_key << '://' << host_string(@data) << port_string(@data)
       end
       reset
     end
@@ -106,7 +106,7 @@ module Excon
           # start with "METHOD /path"
           request = datum[:method].to_s.upcase << ' '
           if datum[:proxy] && datum[:scheme] != HTTPS
-            request << datum[:scheme] << '://' << datum[:host] << port_string(datum)
+            request << datum[:scheme] << '://' << host_string(datum) << port_string(datum)
           end
           request << datum[:path]
 
@@ -208,7 +208,7 @@ module Excon
       if datum[:scheme] == UNIX
         datum[:headers]['Host']   ||= '' << datum[:socket]
       else
-        datum[:headers]['Host']   ||= '' << datum[:host] << port_string(datum)
+        datum[:headers]['Host']   ||= '' << host_string(datum) << port_string(datum)
       end
       datum[:retries_remaining] ||= datum[:retry_limit]
 
